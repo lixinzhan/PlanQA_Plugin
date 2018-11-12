@@ -1,0 +1,64 @@
+#
+# RTOG0915 Protocol, 34/1
+#
+# R: ratio of volume to VPTV
+# P: percentage of dose to prescription
+#
+# R_100%:  V100%/VPTV
+# R_50%:   V50%/VPTV
+# R_105%:  V105%/VPTV
+# P_dmax:  dmax/presc (%)
+#
+# Absolute Dose is always in cGy. 
+# Dose must be absolute for criteria
+# Volume must be in % for criteria.
+#
+# Columes must be seperated by at least one space/tab.
+# Structures must ends with ":".
+#
+
+# STRUCTURE    METRIC            RELATION  CRITERIA
+
+BODY:		R_100%			<  1.2
+BODY:		R_50%			<  RTOG0915_R50
+
+PTV:		dmax			=  gdmax
+PTV:		V_100%			>= 95%
+PTV:		V_90%			>= 99%
+
+HIGH DOSE:	R_105%			<  15%
+
+D2CM:		P_dmax			<  RTOG0915_D2cm
+
+LUNG:		V_2000cGy		<  10%
+LUNG:		D_1500cc		<  700
+LUNG:		D_1000cc		<  740
+
+CORD:		dmax			<  1400
+CORD:		D_0.35cc		<  1000
+CORD:		D_1.2cc			<  700
+
+ESOPH:		dmax			<  1540
+ESOPH:		D_5cc			<  1190
+
+BRACHIAL:	dmax			<  1750
+BRACHIAL:	D_3cc			<  1400
+
+HEART:		dmax			<  2200
+HEART: 		D_15cc			<  1600
+
+VESSEL:		dmax			<  3700
+VESSEL:		D_10cc			<  3100
+
+TRACHEA:	dmax			<  2020
+TRACHEA:	D_4cc			<  1050
+
+RIBS:		dmax			<  3000
+RIBS:		D_1cc			<  2200
+
+SKIN:		dmax			<  2600
+SKIN:		D_10cc			<  2300
+
+STOM:		dmax			<  1240
+STOM:		D_10cc			<  1120
+

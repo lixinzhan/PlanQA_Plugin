@@ -1,0 +1,55 @@
+#
+# RTOG0813 Protocol
+#
+# R: ratio of volume to VPTV
+# P: Percentage ratio of dose to prescription
+#
+# R_100%:  V100%/VPTV
+# R_50%:   V50%/VPTV
+# R_105%:  V105%/VPTV
+# P_dmax:  dmax/presc (%)
+#
+# Absolute Dose is always in cGy. 
+# Dose must be absolute for criteria
+# Volume must be in % for criteria.
+#
+# Columes must be seperated by at least one space/tab.
+# Structures must ends with ":".
+#
+
+BODY:		R_100%			<  1.2
+BODY:		R_50%			<  RTOG0813_R50
+
+PTV:		dmax			=  gdmax
+PTV:		V_100%			>= 95%
+PTV:		V_90%			>= 99%
+
+HIGH DOSE:	R_105%			<  15%
+
+D2CM:		P_dmax			<  RTOG0813_D2cm
+
+LUNG:		V_2000cGy		<  10%
+LUNG:		D_1500cc		<  1250
+LUNG:		D_1000cc		<  1350
+
+CORD:		dmax			<  3000
+CORD:		D_0.25cc		<  2250
+CORD:		D_0.5cc			<  1350
+
+HEART:		P_dmax			<  105%
+HEART: 		D_15cc			<  3200
+
+ESOPH:		P_dmax			<  105%
+ESOPH:		D_5cc			<  2750
+
+TRACHEA:	P_dmax			<  105%
+TRACHEA:	D_4cc			<  1800
+
+SKIN:		dmax			<  3200
+SKIN:		D_10cc			<  3000
+
+VESSEL:		P_dmax			<  105%
+VESSEL:		D_10cc			<  4700
+
+BRACHIAL:	dmax			<  3200
+BRACHIAL:	D_3cc			<  3000

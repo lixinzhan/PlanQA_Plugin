@@ -1,0 +1,42 @@
+#
+# Prostate General 78/39 Protocol
+#
+# R: ratio of volume to VPTV
+# P: percentage of dose to prescription
+#
+# R_100%:  V100%/VPTV
+# R_50%:   V50%/VPTV
+# R_105%:  V105%/VPTV
+# P_dmax:  dmax/presc (%)
+#
+# Absolute Dose is always in cGy. 
+# Dose must be absolute for criteria
+# Volume must be in % for criteria.
+#
+# Columes must be seperated by at least one space/tab.
+# Structures must ends with ":".
+#
+
+# STRUCTURE    METRIC            RELATION  CRITERIA
+
+BODY:		dmax			<  8190
+
+CTV:		dmax			=  gdmax
+PTV:		V_95%			>  99%
+
+FEMUR_R:	dmax			<  5200
+FEMUR_L:	dmax			<  5200
+
+BOWEL:		dmax			<  4500
+
+RECT:		V_5000cGy		<  50%
+RECT:		V_6000cGy		<  35%
+RECT:		V_6500cGy		<  25%
+RECT:		V_7000cGy		<  20%
+RECT:		V_7500cGy		<  15%
+
+BLAD:		V_6500cGy		<  50%
+BLAD:		V_7000cGy		<  35%
+BLAD:		V_7500cGy		<  25%
+BLAD:		V_8000cGy		<  15%
+
