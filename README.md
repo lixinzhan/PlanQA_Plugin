@@ -19,6 +19,6 @@ Usage:
 
 7. If everything is running OK, you can create your own protocol for QA based on the instructions in any of the protocol files coming with this project.
 
-8. Enjoy you Scripting QA!
+8. Enjoy your Scripting QA!
 
 You are welcome for any questions with this plugin!
