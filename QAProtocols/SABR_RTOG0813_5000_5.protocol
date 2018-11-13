@@ -14,7 +14,7 @@
 # Volume must be in % for criteria.
 #
 # Columns must be seperated by at least one space/tab.
-# Structures must ends with ":".
+# Structures must end with ":".
 #
 
 BODY:		R_100%			<  1.2
