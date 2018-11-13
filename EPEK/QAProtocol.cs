@@ -337,10 +337,10 @@ namespace EPEK
             }
 
 
-            message += ("\n\t!!!  ABSOLUTELY NO CLINICAL USAGE   !!!");
-            message += ("\n\t*** USE AT YOUR OWN RISK FOR OTHERS ***\n\n");
-            message += ("Eclipse Plan Evaluation Plugin (Ver 0.4, Built on 2017-05-02).\n");
-            message += ("Please contact Lixin Zhan (x5428) for any questions.");
+            message += ("\n\t*** USE AT YOUR OWN RISK!!! ***\n\n");
+            message += ("\n\t*** NO guarentee for anything with this program! ***\n\n");
+            message += ("Eclipse Plan Evaluation Plugin (Ver 0.5).\n");
+            message += ("Your feedbacks are always welcome!");
 
             System.Windows.MessageBox.Show(message, "Eclipse Plan Evaluation Kit");
 
