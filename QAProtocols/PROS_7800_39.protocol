@@ -14,7 +14,7 @@
 # Volume must be in % for criteria.
 #
 # Columes must be seperated by at least one space/tab.
-# Structures must ends with ":".
+# Structures must end with ":".
 #
 
 # STRUCTURE    METRIC            RELATION  CRITERIA

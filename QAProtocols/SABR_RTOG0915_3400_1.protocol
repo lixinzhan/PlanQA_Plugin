@@ -13,8 +13,8 @@
 # Dose must be absolute for criteria
 # Volume must be in % for criteria.
 #
-# Columes must be seperated by at least one space/tab.
-# Structures must ends with ":".
+# Columns must be seperated by at least one space/tab.
+# Structures must end with ":".
 #
 
 # STRUCTURE    METRIC            RELATION  CRITERIA
