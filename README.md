@@ -1,7 +1,7 @@
 # PlanQA_Plugin
 ESAPI Plugin for RT Plan QA
 
-This project is a ESAPI Plugin for Radiation Therapy Plan QA with different protocols.
+This project is an ESAPI Plugin for Radiation Therapy Plan QA. It is based on Varian Eclipse version 13.6 and has only been tested on 13.6. You can try it on other versions but some revision might be required.
 
 Usage:
 
