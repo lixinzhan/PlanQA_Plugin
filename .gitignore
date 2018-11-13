@@ -1,2 +1,3 @@
 .vs/
 obj/
+!obj/x64/Debug/PlanQA_Plugin.esapi.dll
