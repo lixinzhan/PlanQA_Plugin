@@ -21,6 +21,17 @@ Usage:
 
 8. If you are happy with this script, you can create your own protocol for QA based on the instructions in any of the protocol files coming with this project.
 
-8. Enjoy your QA using the ESAPI script!
+9. Enjoy your QA using the ESAPI script!
+
+
+For users who just wan to try the script and don't like to setup a Visual Studio environment, you can follow the steps below:
+
+1. Download the compiled DLL file in obj/x64/Debug/ to your Eclipse computer.
+
+2. Download the QAProtocols folder to the same location where you save the DLL file.
+
+3. Start your test: Open Plan in External Beam Planning --> Tools --> Scripts --> System Scripts --> Select the PlanQA_Plugin.esapi.dll script --> Run --> Select the protocol --> Open.
+
+4. If you are OK with it, you can put it into your PublishedScripts folder on you image server so that everybody can use it.
 
 You are welcome for any questions with this plugin!
