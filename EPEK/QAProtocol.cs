@@ -40,7 +40,7 @@ namespace EPEK
             numItems = 0;
 
             globalDmax = new DoseValue(-1, DoseValue.DoseUnit.cGy);
-            ptvVolume = -1;
+            ptvVolume = -1.0;
         }
 
         public void ReadinProtocol(Stream myStream)
@@ -86,7 +86,7 @@ namespace EPEK
             //}
             if (rtStructureDic.TryGetValue("PTV", out ptv))
             {
-                ptvVolume = (ptv != null) ? ptv.Volume : -1;
+                ptvVolume = (ptv != null) ? ptv.Volume : -1.0;
             }
             // ptvVolume = (rtStructureDic["PTV"] != null) ? rtStructureDic["PTV"].Volume : -1;
 
@@ -337,9 +337,9 @@ namespace EPEK
             }
 
 
-            message += ("\n\t*** USE AT YOUR OWN RISK!!! ***\n\n");
+            message += ("\n\t*** USE AT YOUR OWN RISK!!! ***\n");
             message += ("\n\t*** NO guarentee for anything with this program! ***\n\n");
-            message += ("Eclipse Plan Evaluation Plugin (Ver 0.5).\n");
+            message += ("Eclipse Plan Evaluation Plugin -- Ver 0.5, (ɔ) 2017-2018.\n");
             message += ("Your feedbacks are always welcome!");
 
             System.Windows.MessageBox.Show(message, "Eclipse Plan Evaluation Kit");

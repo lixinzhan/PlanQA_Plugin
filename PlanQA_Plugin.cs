@@ -28,17 +28,15 @@ namespace VMS.TPS
         OpenFileDialog openFileDialog1 = new OpenFileDialog();
 
             // Locate protocols in the subfolder of running DLL directory.
-            // "\\\\ImageServer\\va_data$\\filedata\\ProgramData\\Vision\\PublishedScripts\\QAProtocols\\";
             string RelativePath = "\\QAProtocols\\";
             openFileDialog1.InitialDirectory = 
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)+RelativePath;
-
             openFileDialog1.Filter = 
                 "RT Protocol files (*.protocol)|*.protocol|All files (*.*)|*.*";
         openFileDialog1.FilterIndex = 1;
         openFileDialog1.RestoreDirectory = true;
 
-        if (openFileDialog1.ShowDialog() == true)
+            if (openFileDialog1.ShowDialog() == true)
         {
             try
             {
@@ -58,7 +56,7 @@ namespace VMS.TPS
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show("Error: Could not read file from disk. Original error: " 
+                MessageBox.Show("Error: Could not read file from disk. Original error: " 
                     + ex.Message);
             }
         }
