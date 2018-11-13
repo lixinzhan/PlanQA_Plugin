@@ -87,7 +87,7 @@ namespace EPEK
             if (rtStructureDic.TryGetValue("PTV", out ptv))
             {
                 ptvVolume = (ptv != null) ? ptv.Volume : -1.0;
-            }
+            } // cases that ptvVolume returns -1.0 even though PTV exists. Reason to be found.
             // ptvVolume = (rtStructureDic["PTV"] != null) ? rtStructureDic["PTV"].Volume : -1;
 
             ParsingMetric();
