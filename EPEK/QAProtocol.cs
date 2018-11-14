@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
+//using System.Text;
 using VMS.TPS.Common.Model.API;
 using VMS.TPS.Common.Model.Types;
 
@@ -63,6 +64,7 @@ namespace EPEK
                 criteriaList.Add(parts.LastOrDefault().Trim());
             }
             numItems = structureList.Count();
+            //MessageBox.Show(numItems.ToString());
 
             return;
         }
@@ -146,12 +148,21 @@ namespace EPEK
             for (int i = 0; i < numItems; i++)
             {
                 length = metricList[i].Length;
+                //MessageBox.Show(metricList[i]);
                 if (metricList[i].ToLower() == "dmax" || metricList[i].ToLower() == "p_dmax")
                 {
-                    metricValues[i] = plan.GetDoseAtVolume(rtStructureDic[structureList[i]], 0, 
-                        VolumePresentation.Relative, DoseValuePresentation.Absolute);
-                    if (metricList[i].ToLower() == "p_dmax") // percentage to globalDmax
-                        metricValues[i] = 100 * metricValues[i] / plan.TotalPrescribedDose;
+                    try
+                    {
+                        double structVolume = rtStructureDic[structureList[i]].Volume; // to verify struct exists.
+                        metricValues[i] = plan.GetDoseAtVolume(rtStructureDic[structureList[i]], 0,
+                            VolumePresentation.Relative, DoseValuePresentation.Absolute);
+                    }
+                    catch
+                    {   // in case structure not exist.
+                        metricValues[i] = new DoseValue(0, DoseValue.DoseUnit.cGy); // make it float.
+                    }
+                    if (metricList[i].ToLower() == "p_dmax") // % of struct max to presc 
+                        metricValues[i] = 100.0 * metricValues[i] / plan.TotalPrescribedDose;
                 }
                 else if (metricList[i].ToUpper().StartsWith("V_") || // V_##% returns % relative
                     metricList[i].ToUpper().StartsWith("R_"))        // R_##% returns ratio to VPTV
@@ -169,13 +180,29 @@ namespace EPEK
                         dosevalue = new DoseValue(value, DoseValue.DoseUnit.cGy);
                     }
 
-                    metricValues[i] = plan.GetVolumeAtDose(rtStructureDic[structureList[i]],
-                        dosevalue, VolumePresentation.Relative);
+                    if (dosevalue.Dose > globalDmax.Dose)
+                    {
+                        metricValues[i] = 0;
+                    }
+                    else
+                    {
+                        metricValues[i] = plan.GetVolumeAtDose(rtStructureDic[structureList[i]],
+                            dosevalue, VolumePresentation.Relative);
+                    }
 
                     if (metricList[i].ToUpper().StartsWith("R_"))  // ratio of Abs to VPTV
                     {
-                        metricValues[i] = metricValues[i] 
-                            * rtStructureDic[structureList[i]].Volume / (100 * ptvVolume);
+                        double structVolume; // if structure not exist, set volume to 0.
+                        try
+                        {
+                            structVolume = rtStructureDic[structureList[i]].Volume;
+                        }
+                        catch
+                        {
+                            structVolume = 0.0;
+                        }
+                        metricValues[i] = (metricValues[i] * structVolume / ptvVolume) * 100.0; // to %
+                            //* rtStructureDic[structureList[i]].Volume / (100 * ptvVolume);
                     }
                 }
                 else if (metricList[i].ToUpper().StartsWith("D_"))  // D_##% or D_##cc

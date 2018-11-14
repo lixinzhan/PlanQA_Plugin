@@ -1,3 +1,5 @@
 .vs/
 obj/x64/Debug/*
 !obj/x64/Debug/PlanQA_Plugin.esapi.dll
+EPEK/bin/
+EPEK/obj/

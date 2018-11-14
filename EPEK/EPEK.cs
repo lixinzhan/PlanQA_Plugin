@@ -29,11 +29,14 @@ namespace EPEK
     }
     static void Execute(Application app)
     {
-        Patient patient = app.OpenPatientById("$20111107");
-        Course course = patient.Courses.Where(c => c.Id == "1").Single();
-        PlanSetup plan = course.PlanSetups.Where(p => p.Id == "PROS").Single();
+        //Patient patient = app.OpenPatientById("00935044");
+        //Course course = patient.Courses.Where(c => c.Id == "2").Single();
+        //PlanSetup plan = course.PlanSetups.Where(p => p.Id == "LUNR").Single();
+            Patient patient = app.OpenPatientById("00190240");
+            Course course = patient.Courses.Where(c => c.Id == "1").Single();
+            PlanSetup plan = course.PlanSetups.Where(p => p.Id == "PROS").Single();
 
-        QAProtocol rtQAProtocol = new QAProtocol();
+            QAProtocol rtQAProtocol = new QAProtocol();
 
         Stream myStream = null;
         OpenFileDialog openFileDialog1 = new OpenFileDialog();
@@ -64,9 +67,23 @@ namespace EPEK
             }
         }
 
-        rtQAProtocol.ApplyToPlan(plan);
+            try
+            {
+                rtQAProtocol.ApplyToPlan(plan);
+            }
+            catch(Exception ex)
+            {
+                System.Windows.MessageBox.Show("Error: in ApplyToPlan. Original error: " + ex.Message);
+            }
 
-        rtQAProtocol.DisplayResults();
+            try
+            {
+                rtQAProtocol.DisplayResults();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show("Error: in DisplayResults. Original error: " + ex.Message);
+            }
 
         return;
     }
