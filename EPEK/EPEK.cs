@@ -29,12 +29,12 @@ namespace EPEK
     }
     static void Execute(Application app)
     {
-        //Patient patient = app.OpenPatientById("00935044");
-        //Course course = patient.Courses.Where(c => c.Id == "2").Single();
-        //PlanSetup plan = course.PlanSetups.Where(p => p.Id == "LUNR").Single();
-            Patient patient = app.OpenPatientById("00190240");
-            Course course = patient.Courses.Where(c => c.Id == "1").Single();
-            PlanSetup plan = course.PlanSetups.Where(p => p.Id == "PROS").Single();
+        Patient patient = app.OpenPatientById("00935044");
+        Course course = patient.Courses.Where(c => c.Id == "2").Single();
+        PlanSetup plan = course.PlanSetups.Where(p => p.Id == "LUNR").Single();
+        //    Patient patient = app.OpenPatientById("00190240");
+        //    Course course = patient.Courses.Where(c => c.Id == "1").Single();
+        //    PlanSetup plan = course.PlanSetups.Where(p => p.Id == "PROS").Single();
 
             QAProtocol rtQAProtocol = new QAProtocol();
 

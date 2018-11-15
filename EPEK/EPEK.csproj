@@ -56,6 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DVHExtensions.cs" />
     <Compile Include="QAProtocol.cs" />
     <Compile Include="EPEK.cs" />
   </ItemGroup>

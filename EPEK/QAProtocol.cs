@@ -3,7 +3,6 @@ using System.Windows;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-//using System.Text;
 using VMS.TPS.Common.Model.API;
 using VMS.TPS.Common.Model.Types;
 
@@ -78,8 +77,10 @@ namespace EPEK
             // get global dmax and PTV volume
             if (rtStructureDic.TryGetValue("BODY", out body) && body != null)
             {
-                globalDmax = plan.GetDoseAtVolume(body, 0, VolumePresentation.Relative, 
-                    DoseValuePresentation.Absolute);
+                var dvh = plan.GetDVHCumulativeData(body, DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.01);
+                globalDmax = dvh.MaxDose;
+                //globalDmax = plan.GetDoseAtVolume(body, 0, VolumePresentation.Relative, 
+                //    DoseValuePresentation.Absolute);
             }
             //if (rtStructureDic["BODY"] != null)
             //{
@@ -154,8 +155,10 @@ namespace EPEK
                     try
                     {
                         double structVolume = rtStructureDic[structureList[i]].Volume; // to verify struct exists.
-                        metricValues[i] = plan.GetDoseAtVolume(rtStructureDic[structureList[i]], 0,
-                            VolumePresentation.Relative, DoseValuePresentation.Absolute);
+                        var dvh = plan.GetDVHCumulativeData(rtStructureDic[structureList[i]], DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.01);
+                        metricValues[i] = dvh.MaxDose;
+                        //metricValues[i] = plan.GetDoseAtVolume(rtStructureDic[structureList[i]], 0,
+                        //    VolumePresentation.Relative, DoseValuePresentation.Absolute);
                     }
                     catch
                     {   // in case structure not exist.
@@ -186,8 +189,13 @@ namespace EPEK
                     }
                     else
                     {
-                        metricValues[i] = plan.GetVolumeAtDose(rtStructureDic[structureList[i]],
-                            dosevalue, VolumePresentation.Relative);
+                        DVHData dvh = plan.GetDVHCumulativeData(rtStructureDic[structureList[i]], 
+                            DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.01);
+                        double ddose = (dosevalue.Unit == DoseValue.DoseUnit.cGy) ? dosevalue.Dose : dosevalue.Dose * 100.0;
+                        metricValues[i] = 100 * DVHExtensions.VolumeAtDose(dvh, ddose) / DVHExtensions.VolumeAtDose(dvh, 0.0); // to %
+
+                        //metricValues[i] = plan.GetVolumeAtDose(rtStructureDic[structureList[i]],
+                        //    dosevalue, VolumePresentation.Relative);
                     }
 
                     if (metricList[i].ToUpper().StartsWith("R_"))  // ratio of Abs to VPTV
@@ -201,8 +209,9 @@ namespace EPEK
                         {
                             structVolume = 0.0;
                         }
-                        metricValues[i] = (metricValues[i] * structVolume / ptvVolume) * 100.0; // to %
-                            //* rtStructureDic[structureList[i]].Volume / (100 * ptvVolume);
+                        metricValues[i] = (metricValues[i] * structVolume / (100 * ptvVolume));
+                        //metricValues[i] = (metricValues[i] / ptvVolume) * 100.0; // to %
+                                                                                                //* rtStructureDic[structureList[i]].Volume / (100 * ptvVolume);
                     }
                 }
                 else if (metricList[i].ToUpper().StartsWith("D_"))  // D_##% or D_##cc
@@ -217,8 +226,17 @@ namespace EPEK
                         volpres = VolumePresentation.Relative;
                         value = Convert.ToDouble(metricList[i].Substring(2, length - 3));
                     }
-                    metricValues[i] = plan.GetDoseAtVolume(rtStructureDic[structureList[i]],
-                        value, volpres, DoseValuePresentation.Absolute);
+                    try
+                    {
+                        //DVHData dvh = plan.GetDVHCumulativeData(rtStructureDic[structureList[i]], DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.01);
+                        //metricValues[i] = DVHExtensions.DoseAtVolume(dvh, value);
+                        metricValues[i] = plan.GetDoseAtVolume(rtStructureDic[structureList[i]],
+                            value, volpres, DoseValuePresentation.Absolute);
+                    }
+                    catch
+                    {
+                        metricValues[i] = new DoseValue(0, DoseValue.DoseUnit.cGy);
+                    }
                 }
                 else
                 {
