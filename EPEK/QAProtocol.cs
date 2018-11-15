@@ -364,7 +364,8 @@ namespace EPEK
                     message += string.Format("{0,-15}\t {1}\t= {2:0.00}",
                         rtStructureDic[structureList[i]].Id+":", metricList[i], metricValues[i] * factor);
                     if (criteriaList[i].ToUpper().StartsWith("GDMAX") || 
-                        criteriaList[i].ToUpper().StartsWith("RTOG")) 
+                        criteriaList[i].ToUpper().StartsWith("RTOG")  ||
+                        criteriaList[i].ToUpper().StartsWith("LUSTRE"))
                     {
                         if (metricList[i].ToUpper().StartsWith("R_") ||
                             metricList[i].ToUpper().StartsWith("P_")) 
@@ -442,6 +443,7 @@ namespace EPEK
             return 6.0;
         }
 
+        // Lustre protocol. Maximum Dose (in % of dose prescribed) @ 2cm from PTV in any direction.
         private double LUSTRE_D2cm()
         {
             double vptv = rtStructureDic["PTV"].Volume;

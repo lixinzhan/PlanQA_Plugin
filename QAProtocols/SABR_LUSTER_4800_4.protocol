@@ -1,0 +1,61 @@
+#
+# LUSTER Protocol, 48/4
+#
+# R: ratio of volume to VPTV
+# P: percentage of dose to prescription
+#
+# R_100%:  V100%/VPTV
+# R_50%:   V50%/VPTV
+# R_105%:  V105%/VPTV
+# P_dmax:  dmax/presc (%)
+#
+# Absolute Dose is always in cGy. 
+# Dose must be absolute for criteria
+# Volume must be in % for criteria.
+#
+# Columns must be seperated by at least one space/tab.
+# Structures must end with ":".
+#
+
+# STRUCTURE    METRIC            RELATION  CRITERIA
+
+BODY:		R_100%			<  LUSTRE_R100
+BODY:		R_50%			<  LUSTRE_R50
+
+PTV:		dmax			=  gdmax
+PTV:		V_100%			>= 95%
+PTV:		V_90%			>= 99%
+
+# HIGH DOSE:	R_105%			<  15%
+
+PTV + 2cm:	P_dmax			<  LUSTRE_D2cm
+
+Total Lung-ITV:	V_2000cGy		<  10%
+Total Lung-ITV:	D_1000cc		<  1300
+
+SPINAL:		dmax			<  2700
+SPINAL:		D_1cc			<  1800
+
+ESOPH:		dmax			<  3000
+ESOPH:		D_5cc			<  1900
+
+BRACH PLEXUS LT: dmax			<  2700
+BRACH PLEXUS RT: dmax			<  2700
+
+HEART:		dmax			<  3500
+HEART: 		D_15cc			<  2900
+
+VESSEL:		dmax			<  4800
+VESSEL:		D_10cc			<  4000
+
+TRACHEA:	dmax			<  4000
+TRACHEA:	D_5cc			<  3200
+
+RIBS:		dmax			<  5000
+RIBS:		D_5cc			<  4000
+
+SKIN:		dmax			<  3600
+SKIN:		D_10cc			<  3300
+
+STOMACH:	dmax			<  2800
+STOMACH:	D_1cc			<  2100
