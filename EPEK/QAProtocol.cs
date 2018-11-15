@@ -274,6 +274,18 @@ namespace EPEK
                 {
                     criteriaValues[i] = RTOG0813_D2cm();
                 }
+                else if (criteriaList[i].ToUpper() == "LUSTRE_R100")
+                {
+                    criteriaValues[i] = LUSTRE_R100();
+                }
+                else if (criteriaList[i].ToUpper() == "LUSTRE_R50")
+                {
+                    criteriaValues[i] = LUSTRE_R50();
+                }
+                else if (criteriaList[i].ToUpper() == "LUSTRE_D2CM")
+                {
+                    criteriaValues[i] = LUSTRE_D2cm();
+                }
                 else if (criteriaList[i].EndsWith("%"))
                 {
                     criteriaValues[i] = Convert.ToDouble(
@@ -405,6 +417,38 @@ namespace EPEK
             meetCriteria = null;
 
             GC.Collect();
+        }
+
+
+        // Lustre protocol. Ratio of 100% presc isodose volume to PTV volume. R100%
+        private double LUSTRE_R100()
+        {
+            double vptv = rtStructureDic["PTV"].Volume;
+
+            if (vptv <= 20) return 1.25;
+            else if (vptv <= 40) return 1.15;
+
+            return 1.10;
+        }
+
+        // Lustre protocol. Ratio of 50% presc isodose volume to PTV volume. R50%
+        private double LUSTRE_R50()
+        {
+            double vptv = rtStructureDic["PTV"].Volume;
+
+            if (vptv <= 20) return 12.0;
+            else if (vptv <= 40) return 9.0;
+
+            return 6.0;
+        }
+
+        private double LUSTRE_D2cm()
+        {
+            double vptv = rtStructureDic["PTV"].Volume;
+
+            if (vptv <= 20) return 65.0;
+
+            return 70.0;
         }
 
         // RTOG0915 48/4
