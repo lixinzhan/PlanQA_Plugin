@@ -207,7 +207,7 @@ namespace EPEK
                         }
                         catch
                         {
-                            structVolume = 0.0;
+                            structVolume = -1.0;
                         }
                         metricValues[i] = (metricValues[i] * structVolume / (100 * ptvVolume));
                         //metricValues[i] = (metricValues[i] / ptvVolume) * 100.0; // to %
@@ -228,19 +228,20 @@ namespace EPEK
                     }
                     try
                     {
-                        //DVHData dvh = plan.GetDVHCumulativeData(rtStructureDic[structureList[i]], DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.01);
-                        //metricValues[i] = DVHExtensions.DoseAtVolume(dvh, value);
-                        metricValues[i] = plan.GetDoseAtVolume(rtStructureDic[structureList[i]],
-                            value, volpres, DoseValuePresentation.Absolute);
+                        DVHData dvh = plan.GetDVHCumulativeData(rtStructureDic[structureList[i]], 
+                            DoseValuePresentation.Absolute, volpres, 0.01);
+                        metricValues[i] = DVHExtensions.DoseAtVolume(dvh, value);
+                        //metricValues[i] = plan.GetDoseAtVolume(rtStructureDic[structureList[i]],
+                        //    value, volpres, DoseValuePresentation.Absolute);
                     }
                     catch
                     {
-                        metricValues[i] = new DoseValue(0, DoseValue.DoseUnit.cGy);
+                        metricValues[i] = new DoseValue(-1, DoseValue.DoseUnit.cGy);
                     }
                 }
                 else
                 {
-                    metricValues[i] = "Failed interpreting metric: " + metricList[i];
+                    metricValues[i] = "Unknown Metric: " + metricList[i];
                 }
             }
             // System.Windows.MessageBox.Show("Parsing metric done");
