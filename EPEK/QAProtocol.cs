@@ -53,7 +53,7 @@ namespace EPEK
                 if (line == "" || line.StartsWith("#")) continue;
                 string[] parts;
                 parts = line.Split(':');
-                structureList.Add(parts.FirstOrDefault());
+                structureList.Add(parts.FirstOrDefault().Trim().ToUpper());
                 parts = parts.LastOrDefault().Trim().Split(new char[] { ' ', '\t' }, 2, 
                     StringSplitOptions.RemoveEmptyEntries);
                 metricList.Add(parts.FirstOrDefault().Trim());
@@ -155,14 +155,15 @@ namespace EPEK
                     try
                     {
                         double structVolume = rtStructureDic[structureList[i]].Volume; // to verify struct exists.
-                        var dvh = plan.GetDVHCumulativeData(rtStructureDic[structureList[i]], DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.01);
+                        var dvh = plan.GetDVHCumulativeData(rtStructureDic[structureList[i]], 
+                            DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.01);
                         metricValues[i] = dvh.MaxDose;
                         //metricValues[i] = plan.GetDoseAtVolume(rtStructureDic[structureList[i]], 0,
                         //    VolumePresentation.Relative, DoseValuePresentation.Absolute);
                     }
                     catch
                     {   // in case structure not exist.
-                        metricValues[i] = new DoseValue(0, DoseValue.DoseUnit.cGy); // make it float.
+                        metricValues[i] = new DoseValue(-1, DoseValue.DoseUnit.cGy); // make it float.
                     }
                     if (metricList[i].ToLower() == "p_dmax") // % of struct max to presc 
                         metricValues[i] = 100.0 * metricValues[i] / plan.TotalPrescribedDose;
