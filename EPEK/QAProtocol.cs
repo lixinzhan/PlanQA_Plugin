@@ -382,7 +382,7 @@ namespace EPEK
                     }
                     else 
                     {
-                        message += (" (" + criteriaList[i] + ")\n");
+                        message += (" (" + relationList[i] + criteriaList[i] + ")\n");
 
                     }
                 }
