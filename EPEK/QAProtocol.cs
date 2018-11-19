@@ -372,11 +372,11 @@ namespace EPEK
                         if (metricList[i].ToUpper().StartsWith("R_") ||
                             metricList[i].ToUpper().StartsWith("P_")) 
                         {
-                            message += string.Format(" ({0:0.00})\n", criteriaValues[i]);
+                            message += string.Format(" ({0}{1:0.00})\n", relationList[i], criteriaValues[i]);
                         }
                         else
                         {
-                            message += string.Format(" ({0:0.0})\n", criteriaValues[i]);
+                            message += string.Format(" ({0}{1:0.0})\n", relationList[i], criteriaValues[i]);
                         }
                         
                     }
