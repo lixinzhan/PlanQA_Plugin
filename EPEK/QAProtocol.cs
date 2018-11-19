@@ -320,6 +320,12 @@ namespace EPEK
             meetCriteria = new bool[structureList.Count()];
             for (int i = 0; i < structureList.Count(); i++)
             {
+                if (metricNumericalValues[i] < 0.0) // deal with cases of -1.0
+                {
+                    meetCriteria[i] = false;
+                    continue;
+                }
+
                 if (relationList[i] == ">")
                     meetCriteria[i] = (metricNumericalValues[i] > criteriaValues[i]) ? true : false;
                 else if (relationList[i] == ">=")
