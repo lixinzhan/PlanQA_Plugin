@@ -403,7 +403,7 @@ namespace EPEK
             }
 
 
-            message += ("\n\t*** USE AT YOUR OWN RISK!!! ***\n");
+            // message += ("\n\t*** USE AT YOUR OWN RISK!!! ***\n");
             message += ("\n\t*** NO guarentee for anything with this program! ***\n\n");
             message += ("Eclipse Plan Evaluation Plugin -- Ver 0.5, (ɔ) 2017-2018.\n");
             message += ("Your feedbacks are always welcome!");
