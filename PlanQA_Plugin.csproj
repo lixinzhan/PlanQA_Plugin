@@ -8,7 +8,7 @@
     <ProjectGuid>{599A24A1-B6DF-40A9-A2B3-CB7E39285F4E}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PlanQA_Plugin</RootNamespace>
+    <RootNamespace>GRCPQA</RootNamespace>
     <AssemblyName>PlanQA_Plugin.esapi</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -58,9 +58,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\MsgBoxWindow.xaml.cs">
+      <DependentUpon>MsgBoxWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MsgBox.cs" />
     <Compile Include="EPEK\DVHExtensions.cs" />
     <Compile Include="PlanQA_Plugin.cs" />
     <Compile Include="EPEK\QAProtocol.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\MsgBoxWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -6,9 +6,11 @@ using System.Linq;
 using VMS.TPS.Common.Model.API;
 using VMS.TPS.Common.Model.Types;
 
-namespace EPEK
+using GRCPQA.Controls;
+
+namespace GRCPQA.EPEK
 {
-    class QAProtocol
+    public class QAProtocol
     {
         // Lists for containing info readin from protocol file
         List<string> structureList = new List<string>();
@@ -41,6 +43,21 @@ namespace EPEK
 
             globalDmax = new DoseValue(-1, DoseValue.DoseUnit.cGy);
             ptvVolume = -1.0;
+        }
+
+        ~QAProtocol() // Destructor
+        {
+            structureList.Clear();
+            metricList.Clear();
+            relationList.Clear();
+            criteriaList.Clear();
+
+            metricValues = null;
+            criteriaValues = null;
+            metricValues = null;
+            meetCriteria = null;
+
+            GC.Collect();
         }
 
         public void ReadinProtocol(Stream myStream)
@@ -354,7 +371,8 @@ namespace EPEK
 
             string message = "";
 
-            message += ("Patient: " + patient.LastName + ", " + patient.FirstName + " (" + patient.Id + ")\n");
+            message += ("Patient: #bold#" + patient.LastName + ", " 
+                + patient.FirstName + "#normal# (" + patient.Id + ")\n");
             message += ("Course:  " + course.Id + "      Plan:  " + plan.Id + "\n");
             message += string.Format("Prescription: {0},  {1:0.##%}\n\n", 
                 plan.TotalPrescribedDose, plan.PrescribedPercentage);
@@ -367,7 +385,7 @@ namespace EPEK
             {
                 if (rtStructureDic[structureList[i]] != null)
                 {
-                    message += (meetCriteria[i]) ? "    " : "??  ";
+                    message += (meetCriteria[i]) ? "    " : "#red#X  #normal";
                     double factor = (criteriaList[i].EndsWith("%") && metricList[i].StartsWith("R_")) ? 100 : 1;
                     message += string.Format("{0,-15}\t {1}\t= {2:0.00}",
                         rtStructureDic[structureList[i]].Id+":", metricList[i], metricValues[i] * factor);
@@ -404,29 +422,16 @@ namespace EPEK
 
 
             // message += ("\n\t*** USE AT YOUR OWN RISK!!! ***\n");
-            message += ("\n\t*** NO guarentee for anything with this program! ***\n\n");
-            message += ("Eclipse Plan Evaluation Plugin -- Ver 0.5, (ɔ) 2017-2018.\n");
+            message += ("\n\t*** No Guarentee for Anything with This Program! ***\n\n");
+            message += ("Eclipse Plan Evaluation Plugin -- Ver 0.6, (ɔ) 2017-2018.\n");
             message += ("Your feedbacks are always welcome!");
 
-            System.Windows.MessageBox.Show(message, "Eclipse Plan Evaluation Kit");
+            //System.Windows.MessageBox.Show(message, "Eclipse Plan Evaluation Kit");
+            MsgBox.Show(message, "Eclipse Plan Evaluation Kit");
 
             return;
         }
 
-        ~QAProtocol() // Destructor
-        {
-            structureList.Clear();
-            metricList.Clear();
-            relationList.Clear();
-            criteriaList.Clear();
-
-            metricValues = null;
-            criteriaValues = null;
-            metricValues = null;
-            meetCriteria = null;
-
-            GC.Collect();
-        }
 
 
         // Lustre protocol. Ratio of 100% presc isodose volume to PTV volume. R100%

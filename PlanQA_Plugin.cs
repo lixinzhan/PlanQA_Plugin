@@ -6,9 +6,10 @@ using System.Reflection;
 using System.Collections.Generic;
 using VMS.TPS.Common.Model.API;
 using VMS.TPS.Common.Model.Types;
-using EPEK;
 using System.IO;
 using Microsoft.Win32;
+
+using GRCPQA.EPEK;
 
 namespace VMS.TPS
 {

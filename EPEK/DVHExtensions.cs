@@ -35,7 +35,7 @@ using VMS.TPS.Common.Model.API;
 using VMS.TPS.Common.Model.Types;
 using System.Windows.Controls;
 
-namespace EPEK
+namespace GRCPQA.EPEK
 {
     public static class DVHExtensions
     {
