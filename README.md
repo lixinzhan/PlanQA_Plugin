@@ -17,7 +17,7 @@ Usage:
 
 6. You can start to test the plugin now: Open Plan in External Beam Planning --> Tools --> Scripts --> System Scripts --> Select the PlanQA_Plugin.esapi.dll script --> Run --> Select the protocol --> Open.
 
-7. Results failed to meet the criteria will have be labeled with '??'.
+7. Results failed to meet the criteria will be labeled with a red 'X'.
 
 8. If you are happy with this script, you can create your own protocol for QA based on the instructions in any of the protocol files coming with this project.
 
