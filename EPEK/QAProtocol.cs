@@ -383,7 +383,7 @@ namespace GRCPQA.EPEK
 
             for (int i = 0; i < structureList.Count(); i++)
             {
-                if (rtStructureDic[structureList[i]] != null)
+                if (rtStructureDic[structureList[i]] != null && metricNumericalValues[i] >= 0.0)
                 {
                     message += (meetCriteria[i]) ? "    " : "#red#X  #normal#";
                     double factor = (criteriaList[i].EndsWith("%") && metricList[i].StartsWith("R_")) ? 100 : 1;
@@ -412,6 +412,15 @@ namespace GRCPQA.EPEK
                 }
             }
 
+            for (int i=0; i<structureList.Count(); i++)
+            {
+                if (rtStructureDic[structureList[i]] != null && metricNumericalValues[i] < 0.0)
+                {
+                    message += string.Format("    {0,-15}\t structure not contoured??\n", 
+                        rtStructureDic[structureList[i]].Id + ":");
+                }
+            }
+
             foreach (KeyValuePair<string, Structure> pair in rtStructureDic)
             {
                 if (pair.Value == null)
@@ -424,7 +433,7 @@ namespace GRCPQA.EPEK
             // message += ("\n\t*** USE AT YOUR OWN RISK!!! ***\n");
             message += ("\n\t*** No Guarentee for Anything with This Program! ***\n\n");
             message += ("Eclipse Plan Evaluation Plugin -- Ver 0.6, (ɔ) 2017-2018.\n");
-            message += ("Your feedbacks are always welcome!");
+            message += ("Your feedback is always welcome!");
 
             //System.Windows.MessageBox.Show(message, "Eclipse Plan Evaluation Kit");
             MsgBox.Show(message, "Eclipse Plan Evaluation Kit");
