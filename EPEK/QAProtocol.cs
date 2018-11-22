@@ -385,7 +385,7 @@ namespace GRCPQA.EPEK
             {
                 if (rtStructureDic[structureList[i]] != null)
                 {
-                    message += (meetCriteria[i]) ? "    " : "#red#X  #normal";
+                    message += (meetCriteria[i]) ? "    " : "#red#X  #normal#";
                     double factor = (criteriaList[i].EndsWith("%") && metricList[i].StartsWith("R_")) ? 100 : 1;
                     message += string.Format("{0,-15}\t {1}\t= {2:0.00}",
                         rtStructureDic[structureList[i]].Id+":", metricList[i], metricValues[i] * factor);
