@@ -19,7 +19,7 @@
 
 # STRUCTURE    METRIC            RELATION  CRITERIA
 
-BODY:		R_100%			<  1.2
+BODY:		R_100%			<  [1.2, 1.5]
 BODY:		R_50%			<  RTOG0915_R50
 
 PTV:		dmax			=  gdmax
@@ -31,12 +31,12 @@ HIGH DOSE:	R_105%			<  15%
 D2CM:		P_dmax			<  RTOG0915_D2cm
 
 LUNG:		V_2000cGy		<  10%
-LUNG:		D_1500cc		<  1160
-LUNG:		D_1000cc		<  1240
+LUNG:		D_1500cc		<  1160cGy
+LUNG:		D_1000cc		<  1240cGy
 
-CORD:		dmax			<  2600
-CORD:		D_0.35cc		<  2080
-CORD:		D_1.2cc			<  1360
+CORD:		dmax			<  2600cGy
+CORD:		D_0.35cc		<  2080cGy
+CORD:		D_1.2cc			<  1360cGy
 
 ESOPH:		dmax			<  3000
 ESOPH:		D_5cc			<  1880

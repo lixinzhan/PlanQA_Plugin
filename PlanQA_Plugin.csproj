@@ -62,6 +62,7 @@
       <DependentUpon>MsgBoxWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\MsgBox.cs" />
+    <Compile Include="EPEK\Criteria.cs" />
     <Compile Include="EPEK\DVHExtensions.cs" />
     <Compile Include="PlanQA_Plugin.cs" />
     <Compile Include="EPEK\QAProtocol.cs" />

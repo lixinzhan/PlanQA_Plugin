@@ -10,20 +10,25 @@ using GRCPQA.Controls;
 
 namespace GRCPQA.EPEK
 {
+    public enum CriteriaViolation { No, Minor, Major };
+
     public class QAProtocol
     {
         // Lists for containing info readin from protocol file
         List<string> structureList = new List<string>();
         List<string> metricList = new List<string>();
         List<string> relationList = new List<string>();
-        List<string> criteriaList = new List<string>();
+        List<string> criteriaInputList = new List<string>();
+        //List<Criteria> criteriaInputList = new List<Criteria>();
+        //List<Criteria> criteriaList = new List<Criteria>();
 
         Dictionary<string, Structure> rtStructureDic = new Dictionary<string, Structure>();
 
         dynamic[] metricValues;
-        dynamic[] criteriaValues;
         dynamic[] metricNumericalValues;
-        bool[] meetCriteria;
+        //bool[] meetCriteria;
+        CriteriaViolation[] criteriaViolations;
+        dynamic[] criteriaEntries;
 
         int numItems;
         
@@ -37,7 +42,8 @@ namespace GRCPQA.EPEK
             structureList.Clear();
             metricList.Clear();
             relationList.Clear();
-            criteriaList.Clear();
+            criteriaInputList.Clear();
+            //criteriaList.Clear();
 
             numItems = 0;
 
@@ -50,12 +56,13 @@ namespace GRCPQA.EPEK
             structureList.Clear();
             metricList.Clear();
             relationList.Clear();
-            criteriaList.Clear();
+            criteriaInputList.Clear();
+            //criteriaList.Clear();
 
             metricValues = null;
-            criteriaValues = null;
             metricValues = null;
-            meetCriteria = null;
+            criteriaViolations = null;
+            criteriaEntries = null;
 
             GC.Collect();
         }
@@ -77,7 +84,7 @@ namespace GRCPQA.EPEK
                 parts = parts.LastOrDefault().Trim().Split(new char[] { ' ', '\t' }, 2, 
                     StringSplitOptions.RemoveEmptyEntries);
                 relationList.Add(parts.FirstOrDefault().Trim());
-                criteriaList.Add(parts.LastOrDefault().Trim());
+                criteriaInputList.Add(parts.LastOrDefault().Trim());
             }
             numItems = structureList.Count();
             //MessageBox.Show(numItems.ToString());
@@ -112,7 +119,7 @@ namespace GRCPQA.EPEK
 
             ParsingMetric();
             ParsingCriteria();
-            CompareMetricToCriteria();
+            PerformMetricToCriteriaComparison();
 
             return;
         }
@@ -269,60 +276,52 @@ namespace GRCPQA.EPEK
         private void ParsingCriteria()
         {
             // parsing criteria. All values are converted to absolute if not yet.
-            criteriaValues = new dynamic[criteriaList.Count()];
-            metricNumericalValues = new dynamic[criteriaValues.Count()];
-            for (int i = 0; i < criteriaList.Count(); i++)
+            criteriaEntries = new dynamic[criteriaInputList.Count()];
+            metricNumericalValues = new dynamic[criteriaEntries.Count()];
+            for (int i = 0; i < criteriaInputList.Count(); i++)
             {
-                if (criteriaList[i].ToUpper() == "GDMAX")
+                if (criteriaInputList[i].ToUpper().Contains("GDMAX"))
                 {
-                    criteriaValues[i] = globalDmax.Dose;
+                    string newReplace;
+                    if (globalDmax.UnitAsString.ToLower() == "cgy")
+                        newReplace = globalDmax.Dose.ToString();
+                    else
+                        newReplace = (globalDmax.Dose * 100.0).ToString();
+
+                    newReplace = criteriaInputList[i].ToUpper().Replace("GDMAX", newReplace);
+                    criteriaEntries[i] = new Criteria(newReplace);
                 }
-                else if (criteriaList[i].ToUpper() == "RTOG0915_R50")
+                else if (criteriaInputList[i].ToUpper() == "RTOG0915_R50")
                 {
-                    criteriaValues[i] = RTOG0915_R50();
+                    criteriaEntries[i] = new Criteria(RTOG0915_R50());
                 }
-                else if (criteriaList[i].ToUpper() == "RTOG0915_D2CM")
+                else if (criteriaInputList[i].ToUpper() == "RTOG0915_D2CM")
                 {
-                    criteriaValues[i] = RTOG0915_D2cm();
+                    criteriaEntries[i] = new Criteria(RTOG0915_D2cm());
                 }
-                else if (criteriaList[i].ToUpper() == "RTOG0813_R50")
+                else if (criteriaInputList[i].ToUpper() == "RTOG0813_R50")
                 {
-                    criteriaValues[i] = RTOG0813_R50();
+                    criteriaEntries[i] = new Criteria(RTOG0813_R50());
                 }
-                else if (criteriaList[i].ToUpper() == "RTOG0813_D2CM")
+                else if (criteriaInputList[i].ToUpper() == "RTOG0813_D2CM")
                 {
-                    criteriaValues[i] = RTOG0813_D2cm();
+                    criteriaEntries[i] = new Criteria(RTOG0813_D2cm());
                 }
-                else if (criteriaList[i].ToUpper() == "LUSTRE_R100")
+                else if (criteriaInputList[i].ToUpper() == "LUSTRE_R100")
                 {
-                    criteriaValues[i] = LUSTRE_R100();
+                    criteriaEntries[i] = new Criteria(LUSTRE_R100());
                 }
-                else if (criteriaList[i].ToUpper() == "LUSTRE_R50")
+                else if (criteriaInputList[i].ToUpper() == "LUSTRE_R50")
                 {
-                    criteriaValues[i] = LUSTRE_R50();
+                    criteriaEntries[i] = new Criteria(LUSTRE_R50());
                 }
-                else if (criteriaList[i].ToUpper() == "LUSTRE_D2CM")
+                else if (criteriaInputList[i].ToUpper() == "LUSTRE_D2CM")
                 {
-                    criteriaValues[i] = LUSTRE_D2cm();
-                }
-                else if (criteriaList[i].EndsWith("%"))
-                {
-                    criteriaValues[i] = Convert.ToDouble(
-                        criteriaList[i].Substring(0, criteriaList[i].Length - 1));
-                    if (metricList[i].ToUpper().StartsWith("R_"))  // R_??% or R_??cGy is a ratio
-                    {
-                        criteriaValues[i] = Convert.ToDouble(
-                            criteriaList[i].Substring(0, criteriaList[i].Length - 1)) / 100;
-                    }
-                }
-                else if (criteriaList[i].ToUpper().EndsWith("CGY"))
-                {
-                    criteriaValues[i] = Convert.ToDouble(
-                        criteriaList[i].Substring(0, criteriaList[i].Length - 3));
+                    criteriaEntries[i] = new Criteria(LUSTRE_D2cm());
                 }
                 else
                 {
-                    criteriaValues[i] = Convert.ToDouble(criteriaList[i]);
+                    criteriaEntries[i] = new Criteria(criteriaInputList[i]);
                 }
 
                 metricNumericalValues[i] = (metricValues[i] is DoseValue) ? metricValues[i].Dose : metricValues[i];
@@ -331,37 +330,66 @@ namespace GRCPQA.EPEK
             return;
         }
 
-        private void CompareMetricToCriteria()
+        private void PerformMetricToCriteriaComparison()
         {
             // Comparing metric with criteria
-            meetCriteria = new bool[structureList.Count()];
+            criteriaViolations = new CriteriaViolation [structureList.Count()];
             for (int i = 0; i < structureList.Count(); i++)
             {
-                if (metricNumericalValues[i] < 0.0) // deal with cases of -1.0
-                {
-                    meetCriteria[i] = false;
-                    continue;
-                }
-
-                if (relationList[i] == ">")
-                    meetCriteria[i] = (metricNumericalValues[i] > criteriaValues[i]) ? true : false;
-                else if (relationList[i] == ">=")
-                    meetCriteria[i] = (metricNumericalValues[i] >= criteriaValues[i]) ? true : false;
-                else if (relationList[i] == "<")
-                    meetCriteria[i] = (metricNumericalValues[i] < criteriaValues[i]) ? true : false;
-                else if (relationList[i] == "<=")
-                    meetCriteria[i] = (metricNumericalValues[i] <= criteriaValues[i]) ? true : false;
-                else if (relationList[i] == "=")
-                    meetCriteria[i] = (metricNumericalValues[i] == criteriaValues[i]) ? true : false;
-                else if (relationList[i] == "==")
-                    meetCriteria[i] = (metricNumericalValues[i] == criteriaValues[i]) ? true : false;
-                else if (relationList[i] == "!=")
-                    meetCriteria[i] = (metricNumericalValues[i] != criteriaValues[i]) ? true : false;
-                else
-                    meetCriteria[i] = false;
+                criteriaViolations[i] = CompareMetricToCriteria(metricNumericalValues[i], 
+                    relationList[i], criteriaEntries[i]);
             }
-            // System.Windows.MessageBox.Show("Comparison done");
             return;
+        }
+
+        private CriteriaViolation CompareMetricToCriteria(double metric, string relation, Criteria criteria)
+        {
+            CriteriaViolation theViolation = CriteriaViolation.No;
+
+            if (relation == ">")
+            {
+                if (criteria.has_major && metric <= criteria.major.numeric)
+                    theViolation = CriteriaViolation.Major;
+                else if (criteria.has_minor && metric <= criteria.minor.numeric)
+                    theViolation = CriteriaViolation.Minor;
+            }
+            else if (relation == ">=")
+            {
+                if (criteria.has_major && metric < criteria.major.numeric)
+                    theViolation = CriteriaViolation.Major;
+                else if (criteria.has_minor && metric < criteria.minor.numeric)
+                    theViolation = CriteriaViolation.Minor;
+            }
+            else if (relation == "<")
+            {
+                if (criteria.has_major && metric >= criteria.major.numeric)
+                    theViolation = CriteriaViolation.Major;
+                else if (criteria.has_minor && metric >= criteria.minor.numeric)
+                    theViolation = CriteriaViolation.Minor;
+            }
+            else if (relation == "<=")
+            {
+                if (criteria.has_major && metric > criteria.major.numeric)
+                    theViolation = CriteriaViolation.Major;
+                else if (criteria.has_minor && metric > criteria.minor.numeric)
+                    theViolation = CriteriaViolation.Minor;
+            }
+            else if (relation == "=" || relation == "==")
+            {
+                if (criteria.has_major && metric != criteria.major.numeric)
+                    theViolation = CriteriaViolation.Major;
+                else if (criteria.has_minor && metric != criteria.minor.numeric)
+                    theViolation = CriteriaViolation.Minor;
+            }
+            else if (relation == "!=")
+            {
+                if (criteria.has_major && metric == criteria.major.numeric)
+                    theViolation = CriteriaViolation.Major;
+                else if (criteria.has_minor && metric == criteria.minor.numeric)
+                    theViolation = CriteriaViolation.Minor;
+            }
+
+            return theViolation;
         }
 
         public void DisplayResults()
@@ -385,29 +413,44 @@ namespace GRCPQA.EPEK
             {
                 if (rtStructureDic[structureList[i]] != null && metricNumericalValues[i] >= 0.0)
                 {
-                    message += (meetCriteria[i]) ? "    " : "#red#X  #normal#";
-                    double factor = (criteriaList[i].EndsWith("%") && metricList[i].StartsWith("R_")) ? 100 : 1;
+                    if (criteriaViolations[i] == CriteriaViolation.No)
+                        message += "    ";
+                    else if (criteriaViolations[i] == CriteriaViolation.Minor)
+                        message += "#red#?  #normal#";
+                    else if (criteriaViolations[i] == CriteriaViolation.Major)
+                        message += "#red#X  #normal#";
+
+                    // message += (meetCriteria[i]) ? "    " : "#red#X  #normal#";
+                    double factor = 1;
+                    if (((criteriaEntries[i].has_major && criteriaEntries[i].major.unit == "%") ||
+                         (criteriaEntries[i].has_minor && criteriaEntries[i].minor.unit == "%")) &&
+                         metricList[i].StartsWith("R_"))
+                    {
+                        factor = 100;
+                    }
                     message += string.Format("{0,-15}\t {1}\t= {2:0.00}",
-                        rtStructureDic[structureList[i]].Id+":", metricList[i], metricValues[i] * factor);
-                    if (criteriaList[i].ToUpper().StartsWith("GDMAX") || 
-                        criteriaList[i].ToUpper().StartsWith("RTOG")  ||
-                        criteriaList[i].ToUpper().StartsWith("LUSTRE"))
+                        rtStructureDic[structureList[i]].Id + ":", metricList[i], metricValues[i] * factor);
+
+                    //message += String.Format(" ({0}{1})\n", relationList[i], criteriaEntries[i].ToString());
+
+                    if (criteriaInputList[i].ToUpper().Contains("GDMAX") ||
+                        criteriaInputList[i].ToUpper().StartsWith("RTOG") ||
+                        criteriaInputList[i].ToUpper().StartsWith("LUSTRE"))
                     {
                         if (metricList[i].ToUpper().StartsWith("R_") ||
-                            metricList[i].ToUpper().StartsWith("P_")) 
+                            metricList[i].ToUpper().StartsWith("P_"))
                         {
-                            message += string.Format(" ({0}{1:0.00})\n", relationList[i], criteriaValues[i]);
+                            message += string.Format(" ({0}{1})\n", relationList[i], criteriaEntries[i].ToString("0.00"));
                         }
                         else
                         {
-                            message += string.Format(" ({0}{1:0.0})\n", relationList[i], criteriaValues[i]);
+                            message += string.Format(" ({0}{1})\n", relationList[i], criteriaEntries[i].ToString("0.0"));
                         }
-                        
-                    }
-                    else 
-                    {
-                        message += (" (" + relationList[i] + criteriaList[i] + ")\n");
 
+                    }
+                    else
+                    {
+                        message += String.Format(" ({0}{1})\n", relationList[i], criteriaEntries[i].ToString());
                     }
                 }
             }
@@ -445,71 +488,132 @@ namespace GRCPQA.EPEK
 
 
         // Lustre protocol. Ratio of 100% presc isodose volume to PTV volume. R100%
-        private double LUSTRE_R100()
+        private string LUSTRE_R100()
         {
             double vptv = rtStructureDic["PTV"].Volume;
 
-            if (vptv <= 20) return 1.25;
-            else if (vptv <= 40) return 1.15;
+            double minor, major;
 
-            return 1.10;
+            if (vptv <= 20)
+            {
+                minor = 1.25;
+                major = 1.40;
+            }
+            else if (vptv <= 40)
+            {
+                minor = 1.15;
+                major = 1.25;
+            }
+            else
+            {
+                minor = 1.10;
+                major = 1.20;
+            }
+
+            return "minormajor(" + minor.ToString() + ", " + major.ToString() + ")";
         }
 
         // Lustre protocol. Ratio of 50% presc isodose volume to PTV volume. R50%
-        private double LUSTRE_R50()
+        private string LUSTRE_R50()
         {
             double vptv = rtStructureDic["PTV"].Volume;
 
-            if (vptv <= 20) return 12.0;
-            else if (vptv <= 40) return 9.0;
+            double minor, major;
 
-            return 6.0;
+            if (vptv <= 20)
+            {
+                minor = 12.0;
+                major = 14.0;
+            }
+            else if (vptv <= 40)
+            {
+                minor = 9.0;
+                major = 11.0;
+            }
+            else
+            {
+                minor = 6.0;
+                major = 8.0;
+            }
+
+            return "minormajor(" + minor.ToString() + ", " + major.ToString() + ")";
         }
 
         // Lustre protocol. Maximum Dose (in % of dose prescribed) @ 2cm from PTV in any direction.
-        private double LUSTRE_D2cm()
+        private string LUSTRE_D2cm()
         {
             double vptv = rtStructureDic["PTV"].Volume;
 
-            if (vptv <= 20) return 65.0;
+            double minor;
+            double major;
 
-            return 70.0;
+            if (vptv <= 20)
+            {
+                minor = 65.0;
+                major = 75.0;
+            }
+            else
+            {
+                minor = 70.0;
+                major = 80.0;
+            }
+
+            return "minormajor(" + minor.ToString() + ", " + major.ToString() + ")";
+        }
+
+        // R100: Ratio of 100% Presc Isodose Volume to PTV Volume, R100%
+        private string RTOG0915_R100()
+        {
+            return "minormajor(1.2, 1.5)";
+        }
+
+        private string RTOG0813_R100()
+        {
+            return RTOG0915_R100();
         }
 
         // RTOG0915 48/4
         // R50: Ratio of 50% Presc Isodose Volume to PTV Volume, R50%.
-        private double RTOG0915_R50()
+        private string RTOG0915_R50()
         {
             double[] xarray = new double[] { 1.8, 3.8, 7.4, 13.2, 22, 34, 50, 70, 95, 126, 163 };
             double[] yarray = new double[] { 5.9, 5.5, 5.1, 4.7, 4.5, 4.3, 4.0, 3.5, 3.3, 3.1, 2.9 };
+            double[] zarray = new double[] { 7.5, 6.5, 6.0, 5.8, 5.5, 5.3, 5.0, 4.8, 4.4, 4.0, 3.7 };
 
             double myx = rtStructureDic["PTV"].Volume;
 
-            return LinearInterpolate(myx, xarray, yarray);
+            double minor = LinearInterpolate(myx, xarray, yarray);
+            double major = LinearInterpolate(myx, xarray, zarray);
+
+            return "minormajor(" + minor.ToString() + ", " + major.ToString() + ")";
         }
 
         // RTOG0915 48/4
         // D_2cm(%): Maximum Dose (in % of dose prescribed) @ 2cm from PTV in any direction.
-        private double RTOG0915_D2cm()
+        private string RTOG0915_D2cm()
         {
             double[] xarray = new double[] { 1.8, 3.8, 7.4, 13.2, 22, 34, 50, 70, 95, 126, 163 };
             double[] yarray = new double[] { 50, 50, 50, 50, 54, 58, 62, 66, 70, 73, 77 };
+            double[] zarray = new double[] { 57, 57, 58, 58, 63, 68, 77, 86, 89, 91, 94 };
 
             double myx = rtStructureDic["PTV"].Volume;
 
-            return LinearInterpolate(myx, xarray, yarray);
+            double minor = LinearInterpolate(myx, xarray, yarray);
+            double major = LinearInterpolate(myx, xarray, zarray);
+
+            return "minormajor(" + minor.ToString() + ", " + major.ToString() + ")";
         }
 
         // RTOG0813 50/5
         // Same R50 defination as in RTOG0915.
-        private double RTOG0813_R50()
+        private string RTOG0813_R50()
         {
             return RTOG0915_R50();
         }
 
         // RTOG0813 50/5
         // Same D_scm definition as in RTOG0915
-        private double RTOG0813_D2cm()
+        private string RTOG0813_D2cm()
         {
             return RTOG0915_D2cm();
         }
