@@ -51,8 +51,8 @@ VESSEL:		D_10cc			<  4000
 TRACHEA:	dmax			<  4000
 TRACHEA:	D_5cc			<  3200
 
-RIBS:		dmax			<  5000
-RIBS:		D_5cc			<  4000
+RIBS:		dmax			<  minor(5000)
+RIBS:		D_5cc			<  minor(4000)
 
 SKIN:		dmax			<  3600
 SKIN:		D_10cc			<  3300

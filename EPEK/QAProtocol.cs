@@ -376,9 +376,9 @@ namespace GRCPQA.EPEK
             }
             else if (relation == "=" || relation == "==")
             {
-                if (criteria.has_major && metric != criteria.major.numeric)
+                if (criteria.has_major && Math.Abs(metric-criteria.major.numeric)>1.0E-6)
                     theViolation = CriteriaViolation.Major;
-                else if (criteria.has_minor && metric != criteria.minor.numeric)
+                else if (criteria.has_minor && Math.Abs(metric-criteria.minor.numeric)>1.0E-6)
                     theViolation = CriteriaViolation.Minor;
             }
             else if (relation == "!=")
