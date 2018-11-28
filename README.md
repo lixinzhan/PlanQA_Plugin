@@ -24,7 +24,7 @@ Usage:
 9. Enjoy your QA using the ESAPI script!
 
 
-For users who just wan to try the script and don't like to setup a Visual Studio environment, you can follow the steps below:
+For users who just want to try the script and don't like to setup a Visual Studio environment, you can follow the steps below:
 
 1. Download the compiled DLL file in obj/x64/Debug/ to your Eclipse computer.
 
