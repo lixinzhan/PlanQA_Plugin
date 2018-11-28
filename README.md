@@ -34,4 +34,6 @@ For users who just wan to try the script and don't like to setup a Visual Studio
 
 4. If you are OK with it, you can put it into your PublishedScripts folder on you image server so that everybody can use it.
 
+*Please use SABR_RTOG0915_4800_4.protocol as the sample and follow the instructions in the file to construct your own protocol. The other sample protocol files included in the same folder may not be up to date.*
+
 You are welcome for any questions with this plugin!
