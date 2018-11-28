@@ -10,11 +10,30 @@
 # P_dmax:  dmax/presc (%)
 #
 # Absolute Dose is always in cGy. 
-# Dose must be absolute for criteria
+# Dose must be absolute for criteria,
 # Volume must be in % for criteria.
 #
 # Columns must be seperated by at least one space/tab.
 # Structures must end with ":".
+#
+# By default, the criteria is for major violation, or explicitly: major(###)
+# If the violation is minor: minor(###)
+# To have both:              minormajor(###, ###) or [###, ###], majorminor(###,###)
+#
+#
+# The structure name does not have to be exact with StructureId in Eclipse.
+# It only needs to be uniquely identifiable.
+# Example: CTV_BRE to represent CTV_BREL @ left breast plan 
+#                           and CTV_BRER @ right breast plan
+# Hence, the same protocol can be applied to both left and right breast plan.
+#
+# Current known limitations, to be worked on later: 
+# 1. Body structure has to be named "BODY" as the ID in Eclipse.
+# 2. "PTV" has to be used as the protocol structure for PTV.
+#    Otherwise, PTV volume won't be calculated.
+# 3. If a criteria is a list, such as R_50% in RTOG0915,
+#    it has to be hard coded now. It will be moved to the 
+#    protocol file in later releases.
 #
 
 # STRUCTURE    METRIC            RELATION  CRITERIA
@@ -31,12 +50,12 @@ HIGH DOSE:	R_105%			<  15%
 D2CM:		P_dmax			<  RTOG0915_D2cm
 
 LUNG:		V_2000cGy		<  10%
-LUNG:		D_1500cc		<  1160cGy
-LUNG:		D_1000cc		<  1240cGy
+LUNG:		D_1500cc		<  1160
+LUNG:		D_1000cc		<  1240
 
-CORD:		dmax			<  2600cGy
-CORD:		D_0.35cc		<  2080cGy
-CORD:		D_1.2cc			<  1360cGy
+CORD:		dmax			<  2600
+CORD:		D_0.35cc		<  2080
+CORD:		D_1.2cc			<  1360
 
 ESOPH:		dmax			<  3000
 ESOPH:		D_5cc			<  1880
@@ -50,8 +69,8 @@ HEART: 		D_15cc			<  2800
 VESSEL:		dmax			<  4900
 VESSEL:		D_10cc			<  4300
 
-TRACHEA:	dmax			<  3480
-TRACHEA:	D_4cc			<  1560
+TRACHEA:	dmax			<  3480cGy
+TRACHEA:	D_4cc			<  1560cGy
 
 RIBS:		dmax			<  minor(4000)
 RIBS:		D_1cc			<  minor(3200)
@@ -59,5 +78,5 @@ RIBS:		D_1cc			<  minor(3200)
 SKIN:		dmax			<  3600
 SKIN:		D_10cc			<  3320
 
-STOM:		dmax			<  2720
-STOM:		D_10cc			<  1760
+STOM:		dmax			<  2720cGy
+STOM:		D_10cc			<  1760cGy

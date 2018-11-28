@@ -475,7 +475,7 @@ namespace GRCPQA.EPEK
 
             // message += ("\n\t*** USE AT YOUR OWN RISK!!! ***\n");
             message += ("\nEclipse Plan Evaluation Plugin -- Version 0.7\n");
-            message += ("(ɔ) Lixin Zhan, 2017-2018.  #italic#Feedback is always welcome!#normal#\n");
+            message += ("(ɔ) Lixin Zhan @GRRCC, 2017-2018.  #italic#Feedback is welcome!#normal#\n");
             //message += ("Feedback is always welcome!");
             message += ("\n\t*** No Guarentee for Anything with This Program! ***\n\n");
 

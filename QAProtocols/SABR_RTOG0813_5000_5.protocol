@@ -17,7 +17,7 @@
 # Structures must end with ":".
 #
 
-BODY:		R_100%			<  1.2
+BODY:		R_100%			<  [1.2, 1.5]
 BODY:		R_50%			<  RTOG0813_R50
 
 PTV:		dmax			=  gdmax
