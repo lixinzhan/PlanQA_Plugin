@@ -473,11 +473,9 @@ namespace GRCPQA.EPEK
             }
 
 
-            // message += ("\n\t*** USE AT YOUR OWN RISK!!! ***\n");
             message += ("\nEclipse Plan Evaluation Plugin -- Version 0.7\n");
-            message += ("(ɔ) Lixin Zhan @GRRCC, 2017-2018.  #italic#Feedback is welcome!#normal#\n");
-            //message += ("Feedback is always welcome!");
-            message += ("\n\t*** No Guarentee for Anything with This Program! ***\n\n");
+            message += ("(ɔ) Lixin Zhan @GRRCC, 2017-2018, MIT License.\n");
+            //message += ("\n\t*** Use at your own risk! ***\n\n");
 
             //System.Windows.MessageBox.Show(message, "Eclipse Plan Evaluation Kit");
             MsgBox.Show(message, "Eclipse Plan Evaluation Kit");
