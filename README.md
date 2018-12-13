@@ -24,7 +24,7 @@ Usage:
 9. Enjoy your QA using the ESAPI script!
 
 
-For users who just wan to try the script and don't like to setup a Visual Studio environment, you can follow the steps below:
+For users who just want to try the script and don't like to setup a Visual Studio environment, you can follow the steps below:
 
 1. Download the compiled DLL file in obj/x64/Debug/ to your Eclipse computer.
 
@@ -34,4 +34,8 @@ For users who just wan to try the script and don't like to setup a Visual Studio
 
 4. If you are OK with it, you can put it into your PublishedScripts folder on you image server so that everybody can use it.
 
-You are welcome for any questions with this plugin!
+*Please use SABR_RTOG0915_4800_4.protocol as the sample and follow the instructions in the file to construct your own protocol. The other sample protocol files included in the same folder may not be up to date.*
+
+*This Plugin is developed and tested only with Eclipse 13.6. It may not work directly for other Eclipse versions (11.x and 15.x). Some changes, should be minimal, might be required if you want to use it with other Eclipse versions.*
+
+You are welcome for any questions with this program! I can be reached via email: FirstnameLastname AT GMAIL DOT COM.
