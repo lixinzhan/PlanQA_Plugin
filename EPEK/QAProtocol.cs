@@ -402,8 +402,11 @@ namespace GRCPQA.EPEK
             message += ("Patient: #bold#" + patient.LastName + ", " 
                 + patient.FirstName + "#normal# (" + patient.Id + ")\n");
             message += ("Course:  " + course.Id + "      Plan:  " + plan.Id + "\n");
-            message += string.Format("Prescription: {0},  {1:0.##%}\n\n", 
-                plan.TotalPrescribedDose, plan.PrescribedPercentage);
+            //message += string.Format("Prescription: {0},  {1:0.##%}\n\n", 
+            //    plan.TotalPrescribedDose, plan.PrescribedPercentage);
+            message += string.Format("Prescription: {0}\n\n",
+                plan.TotalPrescribedDose);
+            
 
             message += string.Format("Global Dmax:\t{0}  or  {1:0.##%}\n",
                 globalDmax, globalDmax / plan.TotalPrescribedDose);
@@ -474,7 +477,7 @@ namespace GRCPQA.EPEK
 
 
             message += ("\nEclipse Plan Evaluation Plugin -- Version 0.7\n");
-            message += ("(ɔ) Lixin Zhan @GRRCC, 2017-2018, MIT License.\n");
+            message += ("(ɔ) Lixin Zhan @GRRCC, 2017-2019, MIT License.\n");
             //message += ("\n\t*** Use at your own risk! ***\n\n");
 
             //System.Windows.MessageBox.Show(message, "Eclipse Plan Evaluation Kit");
