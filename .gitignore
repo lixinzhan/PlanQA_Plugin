@@ -5,3 +5,12 @@ EPEK/bin/
 EPEK/obj/
 DirectTest/bin/
 DirectTest/obj/
+obj/x64/Release/Controls/MsgBoxWindow.baml
+obj/x64/Release/Controls/MsgBoxWindow.g.cs
+obj/x64/Release/Controls/MsgBoxWindow.g.i.cs
+obj/x64/Release/PlanQA_Plugin.csproj.CoreCompileInputs.cache
+obj/x64/Release/PlanQA_Plugin.csproj.FileListAbsolute.txt
+obj/x64/Release/PlanQA_Plugin.csprojAssemblyReference.cache
+obj/x64/Release/PlanQA_Plugin.esapi.g.resources
+obj/x64/Release/PlanQA_Plugin.esapi.pdb
+obj/x64/Release/PlanQA_Plugin.esapi_MarkupCompile.cache

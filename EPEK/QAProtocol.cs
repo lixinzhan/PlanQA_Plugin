@@ -404,13 +404,17 @@ namespace GRCPQA.EPEK
             message += ("Course:  " + course.Id + "      Plan:  " + plan.Id + "\n");
             //message += string.Format("Prescription: {0},  {1:0.##%}\n\n", 
             //    plan.TotalPrescribedDose, plan.PrescribedPercentage);
-            message += string.Format("Prescription: {0}\n\n",
-                plan.TotalPrescribedDose);
+            message += string.Format("Prescription: #bold#{0}#normal#, in #bold#{1}#normal# fractions.\n", 
+                plan.TotalPrescribedDose, plan.UniqueFractionation.NumberOfFractions);
+            message += string.Format("Prescribed Percentage: {0:0.##%}\n\n", plan.PrescribedPercentage);
             
 
             message += string.Format("Global Dmax:\t{0}  or  {1:0.##%}\n",
                 globalDmax, globalDmax / plan.TotalPrescribedDose);
             message += string.Format("PTV Volume:\t{0:0.00} cc\n\n", ptvVolume);
+
+            }
+            maxLength += 1;
 
             for (int i = 0; i < structureList.Count(); i++)
             {
@@ -431,7 +435,9 @@ namespace GRCPQA.EPEK
                     {
                         factor = 100;
                     }
-                    message += string.Format("{0,-15}\t {1}\t= {2:0.00}",
+                    string strfmt = "{0,-" + maxLength.ToString() + "}\t {1}\t= {2:0.00}";
+                    //message = message + strfmt + "\n";
+                    message += string.Format(strfmt, //"{0,-15}\t {1}\t= {2:0.00}",
                         rtStructureDic[structureList[i]].Id + ":", metricList[i], metricValues[i] * factor);
 
                     //message += String.Format(" ({0}{1})\n", relationList[i], criteriaEntries[i].ToString());
@@ -453,6 +459,12 @@ namespace GRCPQA.EPEK
                     }
                     else
                     {
+                        if (criteriaEntries[i].ToString().Trim().EndsWith("%") ||
+                            (criteriaEntries[i].has_major && criteriaEntries[i].major.unit == "%") ||
+                            (criteriaEntries[i].has_minor && criteriaEntries[i].minor.unit == "%") )
+                        {
+                            message += "%";
+                        }
                         message += String.Format(" ({0}{1})\n", relationList[i], criteriaEntries[i].ToString());
                     }
                 }
@@ -462,8 +474,9 @@ namespace GRCPQA.EPEK
             {
                 if (rtStructureDic[structureList[i]] != null && metricNumericalValues[i] < 0.0)
                 {
-                    message += string.Format("    {0,-15}\t structure not contoured??\n", 
-                        rtStructureDic[structureList[i]].Id + ":");
+                    string strfmt = "    {0,-" + maxLength.ToString() + "}\t structure not contoured??\n";
+                    message += string.Format(strfmt, // "    {0,-15}:\t structure not contoured??\n", 
+                        rtStructureDic[structureList[i]].Id+":");
                 }
             }
 
@@ -471,7 +484,8 @@ namespace GRCPQA.EPEK
             {
                 if (pair.Value == null)
                 {
-                    message += string.Format("    {0:-15}\t structure not found!\n", pair.Key + ":");
+                    string strfmt = "    {0,-" + maxLength.ToString() + "}\t structure not found!\n";
+                    message += string.Format(strfmt, pair.Key + ":");
                 }
             }
 
@@ -480,7 +494,6 @@ namespace GRCPQA.EPEK
             message += ("(ɔ) Lixin Zhan @GRRCC, 2017-2019, MIT License.\n");
             //message += ("\n\t*** Use at your own risk! ***\n\n");
 
-            //System.Windows.MessageBox.Show(message, "Eclipse Plan Evaluation Kit");
             MsgBox.Show(message, "Eclipse Plan Evaluation Kit");
 
             return;
