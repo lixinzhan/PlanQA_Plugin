@@ -36,6 +36,6 @@ For users who just want to try the script and don't like to setup a Visual Studi
 
 *Please use SABR_RTOG0915_4800_4.protocol as the sample and follow the instructions in the file to construct your own protocol. The other sample protocol files included in the same folder may not be up to date.*
 
-*This Plugin is developed and tested only with Eclipse 13.6. It may not work directly for other Eclipse versions (11.x and 15.x). Some changes, should be minimal, might be required if you want to use it with other Eclipse versions.*
+*This Plugin is currently developed and tested with Eclipse 15.6. It may not work directly for other Eclipse versions (11.x, 13.x and 16.x). Some changes, should be minimal, might be required if you want to use it with other Eclipse versions.*
 
 You are welcome for any questions with this program! I can be reached via email: FirstnameLastname AT GMAIL DOT COM.
