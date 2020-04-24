@@ -176,6 +176,7 @@ namespace GRCPQA.EPEK
                 //MessageBox.Show(metricList[i]);
                 if (metricList[i].ToLower() == "dmax" || metricList[i].ToLower() == "p_dmax")
                 {
+                    if (rtStructureDic[structureList[i]] is null) continue;
                     try
                     {
                         double structVolume = rtStructureDic[structureList[i]].Volume; // to verify struct exists.
@@ -336,8 +337,15 @@ namespace GRCPQA.EPEK
             criteriaViolations = new CriteriaViolation [structureList.Count()];
             for (int i = 0; i < structureList.Count(); i++)
             {
-                criteriaViolations[i] = CompareMetricToCriteria(metricNumericalValues[i], 
-                    relationList[i], criteriaEntries[i]);
+                if (metricNumericalValues[i] is null || double.IsNaN(metricNumericalValues[i]))
+                {
+                    criteriaViolations[i] = CriteriaViolation.No;
+                }
+                else
+                {
+                    criteriaViolations[i] = CompareMetricToCriteria(metricNumericalValues[i],
+                        relationList[i], criteriaEntries[i]);
+                }
             }
             return;
         }
@@ -413,6 +421,13 @@ namespace GRCPQA.EPEK
                 globalDmax, globalDmax / plan.TotalPrescribedDose);
             message += string.Format("PTV Volume:\t{0:0.00} cc\n\n", ptvVolume);
 
+            int maxLength = 0;
+            for (int i=0; i<structureList.Count(); i++)
+            {
+                if (rtStructureDic[structureList[i]] != null && metricNumericalValues[i] >= 0.0)
+                {
+                    maxLength = (structureList[i].Length > maxLength) ? structureList[i].Length : maxLength;
+                }
             }
             maxLength += 1;
 
@@ -490,8 +505,8 @@ namespace GRCPQA.EPEK
             }
 
 
-            message += ("\nEclipse Plan Evaluation Plugin -- Version 0.7\n");
-            message += ("(ɔ) Lixin Zhan @GRRCC, 2017-2019, MIT License.\n");
+            message += ("\nEclipse Plan Evaluation Plugin -- Ver 1.0 (ESAPI_13.6)\n");
+            message += ("(ɔ) Lixin Zhan @GRRCC, 2017-2020, MIT License.\n");
             //message += ("\n\t*** Use at your own risk! ***\n\n");
 
             MsgBox.Show(message, "Eclipse Plan Evaluation Kit");
