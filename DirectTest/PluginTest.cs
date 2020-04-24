@@ -19,7 +19,7 @@ namespace GRCPQA.PluginTest
     {
       try
       {
-        using (Application app = Application.CreateApplication(null, null))
+        using (Application app = Application.CreateApplication())
         {
           Execute(app);
         }
@@ -36,7 +36,7 @@ namespace GRCPQA.PluginTest
             //PlanSetup plan = course.PlanSetups.Where(p => p.Id == "FEMR2").Single();
             Patient patient = app.OpenPatientById("00935044");
             Course course = patient.Courses.Where(c => c.Id == "2").Single();
-            PlanSetup plan = course.PlanSetups.Where(p => p.Id == "LUNR").Single();
+            PlanSetup plan = course.PlanSetups.Where(p => p.Id == "LUNR").Single(); // SBRT 48/4.
             //    Patient patient = app.OpenPatientById("00190240");
             //    Course course = patient.Courses.Where(c => c.Id == "1").Single();
             //    PlanSetup plan = course.PlanSetups.Where(p => p.Id == "PROS").Single();

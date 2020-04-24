@@ -176,21 +176,38 @@ namespace GRCPQA.EPEK
                 //MessageBox.Show(metricList[i]);
                 if (metricList[i].ToLower() == "dmax" || metricList[i].ToLower() == "p_dmax")
                 {
+                    // exclude non-existing structures 
+                    if (rtStructureDic[structureList[i]] is null) continue;
+
+                    //// for 15.6
+                    //if (rtStructureDic[structureList[i]].IsEmpty)
+                    //{
+                    //    metricValues[i] = new DoseValue(-1, DoseValue.DoseUnit.cGy);
+                    //}
+                    //else
+                    //{
+                    //    var dvh = plan.GetDVHCumulativeData(rtStructureDic[structureList[i]],
+                    //        DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.01);
+                    //    metricValues[i] = dvh.MaxDose;
+                    //}
+
+                    // for 13.6
                     try
-                    {
-                        double structVolume = rtStructureDic[structureList[i]].Volume; // to verify struct exists.
-                        var dvh = plan.GetDVHCumulativeData(rtStructureDic[structureList[i]], 
-                            DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.01);
-                        metricValues[i] = dvh.MaxDose;
-                        //metricValues[i] = plan.GetDoseAtVolume(rtStructureDic[structureList[i]], 0,
-                        //    VolumePresentation.Relative, DoseValuePresentation.Absolute);
-                    }
-                    catch
-                    {   // in case structure not exist.
-                        metricValues[i] = new DoseValue(-1, DoseValue.DoseUnit.cGy); // make it float.
-                    }
+                        {
+                            double structVolume = rtStructureDic[structureList[i]].Volume; // to verify struct exists.
+                            var dvh = plan.GetDVHCumulativeData(rtStructureDic[structureList[i]],
+                                DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.01);
+                            metricValues[i] = dvh.MaxDose;
+                            //metricValues[i] = plan.GetDoseAtVolume(rtStructureDic[structureList[i]], 0,
+                            //    VolumePresentation.Relative, DoseValuePresentation.Absolute);
+                        }
+                        catch
+                        {   // in case structure not exist.
+                            metricValues[i] = new DoseValue(-1, DoseValue.DoseUnit.cGy); // make it float.
+                        }
+
                     if (metricList[i].ToLower() == "p_dmax") // % of struct max to presc 
-                        metricValues[i] = 100.0 * metricValues[i] / plan.TotalPrescribedDose;
+                        metricValues[i] = 100.0 * metricValues[i] / plan.TotalDose;
                 }
                 else if (metricList[i].ToUpper().StartsWith("V_") || // V_##% returns % relative
                     metricList[i].ToUpper().StartsWith("R_"))        // R_##% returns ratio to VPTV
@@ -199,7 +216,7 @@ namespace GRCPQA.EPEK
                     {
                         // convert percentage to absolute in cGy
                         value = Convert.ToDouble(metricList[i].Substring(2, length - 3)) 
-                            * plan.TotalPrescribedDose.Dose / 100.0;
+                            * plan.TotalDose.Dose / 100.0;
                         dosevalue = new DoseValue(value, DoseValue.DoseUnit.cGy);
                     }
                     else if (metricList[i].ToLower().EndsWith("cgy"))
@@ -336,8 +353,15 @@ namespace GRCPQA.EPEK
             criteriaViolations = new CriteriaViolation [structureList.Count()];
             for (int i = 0; i < structureList.Count(); i++)
             {
-                criteriaViolations[i] = CompareMetricToCriteria(metricNumericalValues[i], 
-                    relationList[i], criteriaEntries[i]);
+                if (metricNumericalValues[i] is null || double.IsNaN(metricNumericalValues[i]))
+                {
+                    criteriaViolations[i] = CriteriaViolation.No;
+                }
+                else
+                {
+                    criteriaViolations[i] = CompareMetricToCriteria(metricNumericalValues[i],
+                        relationList[i], criteriaEntries[i]);
+                }
             }
             return;
         }
@@ -405,14 +429,23 @@ namespace GRCPQA.EPEK
             //message += string.Format("Prescription: {0},  {1:0.##%}\n\n", 
             //    plan.TotalPrescribedDose, plan.PrescribedPercentage);
             message += string.Format("Prescription: #bold#{0}#normal#, in #bold#{1}#normal# fractions.\n", 
-                plan.TotalPrescribedDose, plan.UniqueFractionation.NumberOfFractions);
-            message += string.Format("Prescribed Percentage: {0:0.##%}\n\n", plan.PrescribedPercentage);
+                plan.TotalDose, plan.NumberOfFractions);
+            message += string.Format("Prescribed Percentage: {0:0.##%}\n\n", plan.TreatmentPercentage);
             
 
             message += string.Format("Global Dmax:\t{0}  or  {1:0.##%}\n",
-                globalDmax, globalDmax / plan.TotalPrescribedDose);
+                globalDmax, globalDmax / plan.TotalDose);
             message += string.Format("PTV Volume:\t{0:0.00} cc\n\n", ptvVolume);
 
+
+            // obtain the max string length for structure names
+            int maxLength = 0;
+            for (int i=0; i< structureList.Count(); i++)
+            {
+                if (rtStructureDic[structureList[i]] != null && metricNumericalValues[i] >= 0.0)
+                {
+                    maxLength = (structureList[i].Length>maxLength)?structureList[i].Length:maxLength; 
+                }
             }
             maxLength += 1;
 
@@ -490,8 +523,8 @@ namespace GRCPQA.EPEK
             }
 
 
-            message += ("\nEclipse Plan Evaluation Plugin -- Version 0.7\n");
-            message += ("(ɔ) Lixin Zhan @GRRCC, 2017-2019, MIT License.\n");
+            message += ("\nEclipse Plan Evaluation Plugin -- Ver 2.0 (ESAPI_15.6)\n");
+            message += ("(ɔ) Lixin Zhan @GRRCC, 2017-2020, MIT License.\n");
             //message += ("\n\t*** Use at your own risk! ***\n\n");
 
             MsgBox.Show(message, "Eclipse Plan Evaluation Kit");
