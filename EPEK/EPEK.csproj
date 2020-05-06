@@ -32,6 +32,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommandLine, Version=2.5.0.0, Culture=neutral, PublicKeyToken=5a870481e358d379, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommandLineParser.2.5.0\lib\net45\CommandLine.dll</HintPath>
+    </Reference>
+    <Reference Include="EsapiEssentials, Version=2.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\EsapiEssentials.2.0.0\lib\net45\EsapiEssentials.dll</HintPath>
+    </Reference>
+    <Reference Include="ParallelExtensionsExtras, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MSFT.ParallelExtensionsExtras.1.2.0\lib\ParallelExtensionsExtras.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -72,6 +81,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

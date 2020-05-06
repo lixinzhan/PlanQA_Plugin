@@ -10,38 +10,19 @@ using System.IO;
 using Microsoft.Win32;
 
 using EPEK.Models;
+using EsapiEssentials.Plugin;
 
 namespace VMS.TPS
 {
-    public class Script
+    public class Script : ScriptBase
     {
         public Script()
         {
         }
 
-        public void Execute(ScriptContext scriptContext, Window mainWindow)
+        public override void Run(PluginScriptContext context)
         {
-            Run(scriptContext.CurrentUser,
-                scriptContext.Patient,
-                scriptContext.Image,
-                scriptContext.StructureSet,
-                scriptContext.PlanSetup,
-                scriptContext.PlansInScope,
-                scriptContext.PlanSumsInScope,
-                mainWindow);
-        }
-
-        public void Run(
-            User user, 
-            Patient patient, 
-            Image image, 
-            StructureSet structureSet, 
-            PlanSetup planSetup,
-            IEnumerable<PlanSetup> planSetupInScope, 
-            IEnumerable<PlanSum> planSumInScope, 
-            Window mainWindow)
-        {
-            PlanSetup plan = planSetup;
+            PlanSetup plan = context?.PlanSetup as ExternalPlanSetup;
             QAProtocol rtQAProtocol = new QAProtocol();
 
             Stream myStream = null;
