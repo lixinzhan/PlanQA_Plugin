@@ -14,3 +14,4 @@ obj/x64/Release/PlanQA_Plugin.csprojAssemblyReference.cache
 obj/x64/Release/PlanQA_Plugin.esapi.g.resources
 obj/x64/Release/PlanQA_Plugin.esapi.pdb
 obj/x64/Release/PlanQA_Plugin.esapi_MarkupCompile.cache
+/plugins

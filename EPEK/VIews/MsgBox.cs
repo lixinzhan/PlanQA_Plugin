@@ -2,7 +2,7 @@
 // MessageBox like display window.
 //
 
-namespace GRCPQA.Controls
+namespace EPEK.Views
 {
     using System.Windows;
 

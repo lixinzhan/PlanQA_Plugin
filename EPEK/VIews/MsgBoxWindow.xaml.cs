@@ -13,7 +13,7 @@ using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 
 
-namespace GRCPQA.Controls
+namespace EPEK.Views
 {
     public enum FontFormat { Normal = 0, Bold, Italic, Red, Yellow, Blue };
 

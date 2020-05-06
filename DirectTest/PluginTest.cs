@@ -8,9 +8,9 @@ using VMS.TPS.Common.Model.Types;
 using System.IO;
 using Microsoft.Win32;
 
-using GRCPQA.EPEK;
+using EPEK.Models;
 
-namespace GRCPQA.PluginTest
+namespace EPEK.PluginTest
 {
   class Program
   {
