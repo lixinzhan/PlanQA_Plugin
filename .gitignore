@@ -15,3 +15,6 @@ obj/x64/Release/PlanQA_Plugin.esapi.g.resources
 obj/x64/Release/PlanQA_Plugin.esapi.pdb
 obj/x64/Release/PlanQA_Plugin.esapi_MarkupCompile.cache
 /plugins
+/packages
+/PhysQA_Runner/bin/Debug
+/PhysQA_Runner/obj/Debug
