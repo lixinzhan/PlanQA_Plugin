@@ -59,8 +59,8 @@
     <Compile Include="Models\QAProtocol.cs" />
     <Compile Include="PlanQA_Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VIews\MsgBox.cs" />
-    <Compile Include="VIews\MsgBoxWindow.xaml.cs">
+    <Compile Include="Views\MsgBox.cs" />
+    <Compile Include="Views\MsgBoxWindow.xaml.cs">
       <DependentUpon>MsgBoxWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -68,7 +68,7 @@
     <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="VIews\MsgBoxWindow.xaml">
+    <Page Include="Views\MsgBoxWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
