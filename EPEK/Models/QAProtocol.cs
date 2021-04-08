@@ -680,7 +680,7 @@ namespace EPEK.Models
                     break;
                 }
             }
-            return yarray[index - 1] + (yarray[index] - yarray[index - 1]) / (xarray[index] - xarray[index - 1]);
+            return yarray[index - 1] + (x - xarray[index-1]) * (yarray[index] - yarray[index - 1]) / (xarray[index] - xarray[index - 1]);
         }
 
     } // class QAProtocol
