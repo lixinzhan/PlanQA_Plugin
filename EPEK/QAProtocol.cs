@@ -523,8 +523,8 @@ namespace GRCPQA.EPEK
             }
 
 
-            message += ("\nEclipse Plan Evaluation Plugin -- Ver 2.0 (ESAPI_15.6)\n");
-            message += ("(ɔ) Lixin Zhan @GRRCC, 2017-2020, MIT License.\n");
+            message += ("\nEclipse Plan Evaluation Plugin -- Ver 2.0.1 (ESAPI_15.6)\n");
+            message += ("(ɔ) Lixin Zhan @GRRCC, 2017-2021, MIT License.\n");
             //message += ("\n\t*** Use at your own risk! ***\n\n");
 
             MsgBox.Show(message, "Eclipse Plan Evaluation Kit");
@@ -680,7 +680,7 @@ namespace GRCPQA.EPEK
                     break;
                 }
             }
-            return yarray[index - 1] + (yarray[index] - yarray[index - 1]) / (xarray[index] - xarray[index - 1]);
+            return yarray[index - 1] + (x - xarray[index -1]) * (yarray[index] - yarray[index - 1]) / (xarray[index] - xarray[index - 1]);
         }
 
     } // class QAProtocol
